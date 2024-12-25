@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.mohsen.webview" />
+                  <option name="mobileSdkAppId" value="1:974602398374:android:8cf21f2a7af24328c4e267" />
+                  <option name="projectId" value="webview-6de55" />
+                  <option name="projectNumber" value="974602398374" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
