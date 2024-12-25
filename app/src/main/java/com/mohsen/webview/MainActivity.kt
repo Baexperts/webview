@@ -1,27 +1,33 @@
 package com.mohsen.webview
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import com.mohsen.webview.ui.theme.WebviewTheme
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WebviewTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    WebViewChart(modifier = Modifier.padding(innerPadding))
+                Scaffold(modifier = Modifier.fillMaxSize()) {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        // Chart WebView takes half the space
+                        WebViewChart(modifier = Modifier.weight(1f))
+                        // URL WebView takes the remaining space
+                        WebViewUrl(modifier = Modifier.weight(1f))
+                    }
                 }
             }
         }
@@ -32,10 +38,9 @@ class MainActivity : ComponentActivity() {
 fun WebViewChart(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
-    // WebView setup
     val webView = WebView(context).apply {
         settings.javaScriptEnabled = true
-        webViewClient = WebViewClient() // Handle redirects within the WebView
+        webViewClient = WebViewClient()
         loadDataWithBaseURL(
             null,
             """
@@ -74,17 +79,18 @@ fun WebViewChart(modifier: Modifier = Modifier) {
         )
     }
 
-    // Place the WebView in the Compose layout
-    androidx.compose.ui.viewinterop.AndroidView(
-        factory = { webView },
-        modifier = modifier
-    )
+    AndroidView(factory = { webView }, modifier = modifier)
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    WebviewTheme {
-        WebViewChart()
+fun WebViewUrl(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+
+    val webView = WebView(context).apply {
+        settings.javaScriptEnabled = true
+        webViewClient = WebViewClient()
+        loadUrl("https://www.baexpert.ir")
     }
+
+    AndroidView(factory = { webView }, modifier = modifier)
 }
